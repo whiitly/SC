@@ -1,6 +1,5 @@
 require("dotenv").config()
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-// const mnemonic = "orange apple banana ...";
 
 /**
  * Use this file to configure your truffle project. It's seeded with some
@@ -49,10 +48,10 @@ const HDWalletProvider = require("@truffle/hdwallet-provider");
 // const { MNEMONIC, PROJECT_ID } = process.env;
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 
-const private_keys = [
-  process.env.PRIVATE_KEY_O,
-  process.env.PRIVATE_KEY_1,
-]
+// const private_keys = [
+//   process.env.PRIVATE_KEY_O,
+//   process.env.PRIVATE_KEY_1,
+// ]
 
 module.exports = {
   /**
@@ -66,17 +65,39 @@ module.exports = {
    */
 
   networks: {
+    goerli: {
+      provider: () => new HDWalletProvider({
+        privateKeys: [process.env.INFURA_API_KEY],
+        providerOrUrl: process.env.INFURA_API_URL,
+        numberOfAddresses: 1
+      }),
+      network_id: '5', // eslint-disable-line camelcase
+      // gas: 4465030,
+      gasPrice: 50000000000,
+      websocket: true
+    },
+    // goerli: {
+    //   provider: () => {
+    //     return new HDWalletProvider(process.env.MNEMONIC, 'https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}')},
+    //   network_id: '5', // eslint-disable-line camelcase
+    //   // gas: 4465030,
+    //   gasPrice: 50000000000,
+    //   websocket: true
+    // },
+
+
+
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
     // You should run a client (like ganache, geth, or parity) in a separate terminal
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-    development: {
-      host: "127.0.0.1",     // Localhost (default: none)
-      port: 8545,            // Standard Ethereum port (default: none)
-      network_id: "*",       // Any network (default: none)
-    },
+    // development: {
+    //   host: "127.0.0.1",     // Localhost (default: none)
+    //   port: 8545,            // Standard Ethereum port (default: none)
+    //   network_id: "*",       // Any network (default: none)
+    // },
     //
     // An additional network, but with some advanced options…
     // advanced: {
@@ -113,16 +134,7 @@ module.exports = {
     //   skipDryRun: true
     // },
 
-    goerli: {
-      provider: () => {
-        return new HDWalletProvider(
-          process.env.MNEMONIC,
-          'wss://goerli.infura.io/v3/${process.env.INFURA_API_KEY}'
-        )},
-      network_id: '5', // eslint-disable-line camelcase
-      gas: 4465030,
-      gasPrice: 10000000000,
-    },
+    
 
     //
     // Useful for private networks
@@ -134,9 +146,9 @@ module.exports = {
   },
 
   // Set default mocha options here, use special reporters, etc.
-  mocha: {
+  // mocha: {
     // timeout: 100000
-  },
+  // },
 
   // Configure your compilers
   compilers: {

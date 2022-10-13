@@ -12,47 +12,46 @@ import 'bulma/css/bulma.css'
 import styles from '../styles/VendingMachine.module.css'
 
 const VendingMachine = () => {
-    const [error, setError] = useState('')
-    const [successMsg, setSuccessMsg] = useState('')
-    const [inventory, setInventory] = useState('')
-    const [myDonutCount, setMyDonutCount] = useState('')
-    const [buyCount, setBuyCount] = useState('')
-    const [web3, setWeb3] = useState(null)
-    const [address, setAddress] = useState(null)
-    const [vmContract, setVmContract] = useState(null)
-    const [web3, setWeb3] = useState(null)
+  const [error, setError] = useState('')
+  const [successMsg, setSuccessMsg] = useState('')
+  const [inventory, setInventory] = useState('')
+  const [myDonutCount, setMyDonutCount] = useState('')
+  const [buyCount, setBuyCount] = useState('')
+  const [web3, setWeb3] = useState(null)
+  const [address, setAddress] = useState(null)
+  const [vmContract, setVmContract] = useState(null)
 
-    useEffect(() => {
-      if (vmContract) getInventoryHandler()
-      if (vmContract && address) getMyDonutCountHandler()
-    }, [vmContract, address])
+  useEffect(() => {
+    if (vmContract) getInventoryHandler()
+    if (vmContract && address) getMyDonutCountHandler()
+  }, [vmContract, address])
 
-    const getInventoryHandler = async () => {
-      const inventory = await vmContract.methods.getVendingMachineBalance().call()
-      setInventory(inventory)
-    }
+  const getInventoryHandler = async () => {
+    const inventory = await vmContract.methods.getVendingMachineBalance().call()
+    setInventory(inventory)
+  }
 
-    const getMyDonutCountHandler = async () => {
-      const count = await vmContract.methods.donutBalances(address).call()
-      setMyDonutCount(count)
-    }
+  const getMyDonutCountHandler = async () => {
+    const count = await vmContract.methods.donutBalances(address).call()
+    setMyDonutCount(count)
+  }
 
-    const updateDonutQty = event => {
-      setBuyCount(event.target.value)
-    }
+  const updateDonutQty = event => {
+    setBuyCount(event.target.value)
+  }
 
-    const buyDonutHandler = async () => {
-      try {
-        await vmContract.methods.purchase(buyCount).send({
-          from: address,
-          value: web3.utils.toWei('2', 'ether') * buyCount
+  const buyDonutHandler = async () => {
+    try {
+      await vmContract.methods.purchase(buyCount).send({
+        from: address,
+        value: web3.utils.toWei('2', 'ether') * buyCount
 
-        console.log("try to purchase")
-        await vmContract.methods.purchase(parseInt(buyCount)).send({
-          from: address,
-          value: web3.utils.toWei('2', 'ether') * buyCount,
-          gas: 3000000,
-          gasPrice: null
+        // console.log("try to purchase")
+        // await vmContract.methods.purchase(parseInt(buyCount)).send({
+        //   from: address,
+        //   value: web3.utils.toWei('2', 'ether') * buyCount,
+        //   gas: 3000000,
+        //   gasPrice: null
 
         })
         setSuccessMsg(`${buyCount} donuts purchased!`)
