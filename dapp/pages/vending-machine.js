@@ -14,12 +14,13 @@ import styles from '../styles/VendingMachine.module.css'
 const VendingMachine = () => {
   const [error, setError] = useState('')
   const [successMsg, setSuccessMsg] = useState('')
-  const [inventory, setInventory] = useState('')
-  const [myDonutCount, setMyDonutCount] = useState('')
   const [buyCount, setBuyCount] = useState('')
   const [web3, setWeb3] = useState(null)
   const [address, setAddress] = useState(null)
   const [vmContract, setVmContract] = useState(null)
+  const [inventory, setInventory] = useState('')
+  const [myDonutCount, setMyDonutCount] = useState('')
+
 
   useEffect(() => {
     if (vmContract) getInventoryHandler()
@@ -44,7 +45,7 @@ const VendingMachine = () => {
     try {
       await vmContract.methods.purchase(buyCount).send({
         from: address,
-        value: web3.utils.toWei('2', 'ether') * buyCount
+        value: web3.utils.toWei('0.1', 'ether') * buyCount
 
         // console.log("try to purchase")
         // await vmContract.methods.purchase(parseInt(buyCount)).send({
